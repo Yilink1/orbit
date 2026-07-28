@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Yilink的网页浏览报告</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+    color: white;
+    background: linear-gradient(160deg, #000000, #111827, #1e1b4b);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 650px;
+    margin: auto;
+}
+
+.hero {
+    text-align: center;
+    padding: 70px 20px 40px;
+}
+
+/* 头像略微旋转入场动画 */
+@keyframes avatarEntrance {
+    0% {
+        transform: rotate(-15deg) scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+    }
+}
+
+.avatar-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    animation: avatarEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    cursor: pointer;
+}
+
+.hero img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero img:hover {
+    transform: scale(1.06) rotate(6deg);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.8);
+}
+
+.hero h1 {
+    @media (max-width: 480px) { .hero h1 { font-size: 32px; } }
+    font-size: 48px;
+    letter-spacing: -3px;
+    margin: 0;
+}
+
+.hero p {
+    color: #aaa;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, .12);
+    backdrop-filter: blur(25px);
+    border-radius: 32px;
+    padding: 30px;
+    text-align: center;
+    margin: 25px 0;
+    box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.big {
+    font-size: 64px;
+    font-weight: 800;
+    letter-spacing: -3px;
+    background: linear-gradient(90deg, #ffffff, #9ca3af);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.desc {
+    color: #aaa;
+    margin-top: 8px;
+    font-size: 18px;
+}
+
+.person {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.rank {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+    font-size: 17px;
+}
+
+.rank:last-child {
+    border-bottom: none;
+}
+
+.tag-group {
+    margin-bottom: 22px;
+    text-align: left;
+}
+
+.tag-title {
+    font-size: 14px;
+    color: #8b5cf6;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 9px 16px;
+    background: rgba(255, 255, 255, .1);
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tag:hover {
+    background: rgba(139, 92, 246, 0.4);
+    border-color: rgba(139, 92, 246, 0.8);
+}
+
+h2 {
+    font-size: 24px;
+    margin-top: 0;
+}
+
+.chart-container {
+    position: relative;
+    height: 250px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.footer {
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+    padding: 30px;
+}
+
+.footer a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer a:hover {
+    color: #8b5cf6;
+}
+
+/* 底部轻量气泡通知样式（已减小抖动幅度） */
+#toast-notification {
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%) translateY(30px);
+    background: rgba(20, 18, 45, 0.95);
+    border: 1px solid rgba(139, 92, 246, 0.6);
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 32px;
+    font-size: 16px;
+    font-weight: 500;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    z-index: 9999;
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.34, 1.15, 0.64, 1), opacity 0.3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+}
+#toast-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* 专属友好提示弹窗样式 */
+.custom-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center; /* 修改：使弹窗垂直居中 */
+    padding: 20px; /* 修改：移除顶部 padding，靠 margin 或 center 居中 */
+}
+
+.custom-modal-content {
+    background: rgba(20, 18, 45, 0.95);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    border-radius: 32px;
+    padding: 40px 35px;
+    max-width: 480px;
+    width: 95%;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+    animation: modalPop 0.25s ease-out;
+}
+
+@keyframes modalPop {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.custom-modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #fff;
+}
+
+.custom-modal-desc {
+    font-size: 17px;
+    color: #cbd5e1;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.custom-modal-desc span {
+    color: #a78bfa;
+    font-weight: 600;
+}
+
+.custom-modal-btns {
+    display: flex;
+    gap: 15px;
+}
+
+.custom-modal-btn {
+    flex: 1;
+    padding: 14px 18px;
+    border-radius: 18px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-cancel {
+    background: rgba(255, 255, 255, 0.08);
+    color: #94a3b8;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+.btn-confirm {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+}
+
+.btn-confirm:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="hero">
+    <a href="javascript:void(0);" onclick="showToastAndRedirect('https://yilink.uk')" class="avatar-link" title="访问 Yilink 主页">
+        <img src="https://img.yilink.uk/yilink.jpg" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\'><rect width=\'120\' height=\'120\' fill=\'%23333\'/><text x=\'50%\' y=\'50%\' fill=\'white\' font-size=\'40\' text-anchor=\'middle\' dy=\'.3em\'>Y</text></svg>'">
+    </a>
+    <h1>Yilink 的赛博漫游报告</h1>
+    <p style="margin-top: 20px; text-align: center; display: flex; justify-content: center; gap: 10px;">
+        <span>2025-06-14</span>
+        <span style="color:#8b5cf6;">~</span>
+        <span>2026-07-28</span>
+    </p>
+</div>
+
+<div class="grid-2">
+    <div class="card" style="margin: 10px 0;">
+        <div class="big" style="font-size: 48px;">12167</div>
+        <div class="desc" style="font-size: 14px;">次网页浏览</div>
+    </div>
+    <div class="card" style="margin: 10px 0;">
+        <div class="big" style="font-size: 48px;">404</div>
+        <div class="desc" style="font-size: 14px;">天的互联网探索</div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="person" style="margin-bottom: 5px;">💻 赛博游侠 / 搞机砖家</div>
+    <div class="desc" style="font-size: 15px; margin-bottom: 25px;">游走于云端架构与底层系统之间的探险者</div>
+    <div style="display: flex; justify-content: space-between; text-align: center;">
+        <div style="flex: 1;">
+            <div style="color: #aaa; font-size: 14px;">夜间活动 (0-5点)</div>
+            <div style="font-size: 20px; font-weight: bold; margin-top: 5px; color: #a78bfa;">13.5%</div>
+        </div>
+        <div style="width: 1px; background: rgba(255,255,255,.1);"></div>
+        <div style="flex: 1;">
+            <div style="color: #aaa; font-size: 14px;">日均信息吞吐</div>
+            <div style="font-size: 20px; font-weight: bold; margin-top: 5px;">30.1 条</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🎯 领域专注度</h2>
+    <div class="desc" style="font-size: 14px; margin-bottom: 10px;">你的数字足迹在哪些领域留留下印记？</div>
+    <div class="chart-container" style="height: 220px;">
+        <canvas id="doughnutChart"></canvas>
+    </div>
+</div>
+
+<div class="card">
+    <h2>⏰ 24小时活跃雷达</h2>
+    <div class="chart-container">
+        <canvas id="timeChart"></canvas>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🔥 历史上最忙碌的 5 天</h2>
+    <div class="rank"><span>2026-06-22</span><b style="color: #a78bfa;">242 条</b></div>
+    <div class="rank"><span>2026-07-26</span><b>219 条</b></div>
+    <div class="rank"><span>2026-07-23</span><b>195 条</b></div>
+    <div class="rank"><span>2026-04-22</span><b>193 条</b></div>
+    <div class="rank"><span>2026-06-16</span><b>190 条</b></div>
+</div>
+
+<div class="card">
+    <h2>🌐 核心阵地 Top 10</h2>
+    <div class="rank"><span>#1 baidu.com</span><b>3949 次</b></div>
+    <div class="rank"><span>#2 x.com</span><b>1409 次</b></div>
+    <div class="rank"><span>#3 google.com</span><b>1169 次</b></div>
+    <div class="rank"><span>#4 github.com</span><b>275 次</b></div>
+    <div class="rank"><span>#5 4399.com</span><b>248 次</b></div>
+    <div class="rank"><span>#6 binmt.cc</span><b>236 次</b></div>
+    <div class="rank"><span>#7 vercel.app</span><b>227 次</b></div>
+    <div class="rank"><span>#8 bilibili.com</span><b>185 次</b></div>
+    <div class="rank"><span>#9 live.com</span><b>180 次</b></div>
+    <div class="rank"><span>#10 nintendo.com</span><b>156 次</b></div>
+</div>
+
+<div class="card">
+    <h2>🔤 极客兴趣图谱</h2>
+    
+    <div class="tag-group">
+        <div class="tag-title">🤖 AI 大模型驯兽师</div>
+        <div class="tag-container">
+            <span class="tag">Gemini Pro</span>
+            <span class="tag">Claude API</span>
+            <span class="tag">ChatGPT</span>
+            <span class="tag">Grok</span>
+            <span class="tag">DeepSeek</span>
+        </div>
+    </div>
+
+    <div class="tag-group">
+        <div class="tag-title">☁️ Serverless 架构师</div>
+        <div class="tag-container">
+            <span class="tag">Vercel 部署</span>
+            <span class="tag">Cloudflare Tunnel</span>
+            <span class="tag">GitHub Actions</span>
+            <a href="javascript:void(0);" onclick="openProjectModal()" class="tag">果了个果</a>
+        </div>
+    </div>
+
+    <div class="tag-group">
+        <div class="tag-title">🛠️ 安卓底层魔法师</div>
+        <div class="tag-container">
+            <span class="tag">Magisk / KernelSU</span>
+            <span class="tag">Scene</span>
+            <span class="tag">LSPosed 框架</span>
+            <span class="tag">MT 管理器</span>
+        </div>
+    </div>
+
+    <div class="tag-group">
+        <div class="tag-title">🎮 精神避难所</div>
+        <div class="tag-container">
+            <span class="tag">Minecraft 基岩版</span>
+            <span class="tag">Epic 喜加一</span>
+            <span class="tag">OneShot (Niko)</span>
+            <span class="tag">空洞骑士</span>
+        </div>
+    </div>
+</div>
+
+<div style="text-align: center; color: #666; font-size: 12px; margin-top: 10px;">基于手机浏览器的历史记录静态生成</div>
+<div class="footer">
+    © <a href="https://yilink.uk" target="_blank">Yilink（点我进主页喵~）</a>
+</div>
+
+</div>
+
+<!-- 底部气泡通知 DOM -->
+<div id="toast-notification">正在前往 Yilink 的主页喵……</div>
+
+<!-- 专属提示弹窗结构 -->
+<div id="projectModal" class="custom-modal">
+    <div class="custom-modal-content">
+        <div class="custom-modal-title">✨ 传送门提示</div>
+        <div class="custom-modal-desc">
+            嗨！这是我（Yilink）的个人项目 <span>「果了个果」</span>，绝对是我的地盘，放心去逛吧！
+        </div>
+        <div class="custom-modal-btns">
+            <button class="custom-modal-btn btn-cancel" onclick="closeProjectModal()">留在这里</button>
+            <a href="https://shop.yilink.uk/" target="_blank" class="custom-modal-btn btn-confirm" onclick="closeProjectModal()">去看看</a>
+        </div>
+    </div>
+</div>
+
+<script>
+// 头像点击气泡提示与跳转逻辑
+function showToastAndRedirect(url) {
+    var toast = document.getElementById('toast-notification');
+    toast.classList.add('show');
+    
+    setTimeout(function() {
+        window.open(url, '_blank');
+        toast.classList.remove('show');
+    }, 800);
+}
+
+// 控制弹窗的打开与关闭
+function openProjectModal() {
+    document.getElementById('projectModal').style.display = 'flex';
+}
+function closeProjectModal() {
+    document.getElementById('projectModal').style.display = 'none';
+}
+// 点击弹窗背景也可以关闭
+window.onclick = function(event) {
+    var modal = document.getElementById('projectModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// 柱状图：24小时活跃雷达
+new Chart(document.getElementById('timeChart'), {
+    type: 'bar',
+    data: {
+        labels: ["0:00", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23:00"],
+        datasets: [{
+            data: [571, 592, 360, 97, 18, 4, 49, 99, 305, 673, 692, 628, 780, 933, 824, 618, 581, 785, 615, 615, 649, 616, 646, 417],
+            backgroundColor: 'rgba(139, 92, 246, 0.7)',
+            hoverBackgroundColor: 'rgba(167, 139, 250, 1)',
+            borderRadius: 4
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { grid: { display: false, drawBorder: false }, ticks: { color: "#888", maxTicksLimit: 12 } },
+            y: { grid: { color: "rgba(255,255,255,0.05)" }, ticks: { color: "#888" } }
+        }
+    }
+});
+
+// 环形图：领域专注度
+new Chart(document.getElementById('doughnutChart'), {
+    type: 'doughnut',
+    data: {
+        labels: ['开发与部署 (Vercel/CF)', 'AI 大模型对话', '技术社区与论坛', '社交与信息流', '游戏与娱乐'],
+        datasets: [{
+            data: [35, 25, 20, 12, 8],
+            backgroundColor: [
+                '#8b5cf6', // 紫色
+                '#3b82f6', // 蓝色
+                '#10b981', // 绿色
+                '#f59e0b', // 橙色
+                '#ef4444'  // 红色
+            ],
+            borderWidth: 0,
+            hoverOffset: 4
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        cutout: '70%',
+        plugins: {
+            legend: {
+                position: 'right',
+                labels: { color: '#ccc', font: { size: 12 }, boxWidth: 12, padding: 15 }
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>
