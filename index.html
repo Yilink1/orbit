@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Yilink的网页浏览报告</title>
+<title>Yilink的网页浏览报告 - 独立终端子系统</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -34,7 +34,6 @@ body {
     padding: 70px 20px 40px;
 }
 
-/* 头像略微旋转入场动画 */
 @keyframes avatarEntrance {
     0% {
         transform: rotate(-15deg) scale(0.8);
@@ -68,10 +67,13 @@ body {
 }
 
 .hero h1 {
-    @media (max-width: 480px) { .hero h1 { font-size: 32px; } }
     font-size: 48px;
     letter-spacing: -3px;
     margin: 0;
+}
+
+@media (max-width: 480px) { 
+    .hero h1 { font-size: 32px; } 
 }
 
 .hero p {
@@ -128,129 +130,221 @@ body {
     border-bottom: none;
 }
 
-/* 极简居中浮层样式 */
-.minimal-modal {
+/* ================= 独立终端子系统样式 (黑客风格) ================= */
+.terminal-subsystem {
+    background: #020602 !important;
+    border: 2px solid #00ff66 !important;
+    border-radius: 4px !important;
+    padding: 25px 20px !important;
+    position: relative;
+    box-shadow: 0 0 25px rgba(0, 255, 102, 0.2), inset 0 0 30px rgba(0, 255, 102, 0.05) !important;
+    overflow: hidden;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    text-align: left;
+    margin: 30px 0;
+}
+
+/* 扫描线纹理叠加 */
+.terminal-subsystem::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    z-index: 10;
+    background-size: 100% 3px, 3px 100%;
+    pointer-events: none;
+}
+
+/* 巨大的幽灵数字背景 */
+.terminal-ghost-bg {
+    position: absolute;
+    right: -10px;
+    bottom: -20px;
+    font-size: 140px;
+    font-weight: 900;
+    color: rgba(0, 255, 102, 0.03);
+    pointer-events: none;
+    z-index: 1;
+    line-height: 1;
+    user-select: none;
+}
+
+.terminal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed rgba(0, 255, 102, 0.3);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.terminal-title {
+    color: #00ff66;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(0, 255, 102, 0.5);
+}
+
+.terminal-status {
+    font-size: 12px;
+    color: #00ff66;
+    background: rgba(0, 255, 102, 0.1);
+    border: 1px solid rgba(0, 255, 102, 0.4);
+    padding: 2px 8px;
+    animation: terminalBlink 1.5s infinite;
+}
+
+@keyframes terminalBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* 锯齿状信号波形图容器 */
+.signal-waveform-container {
+    height: 70px;
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+/* 横向滑动日志卡片轨道 */
+.terminal-slider-wrapper {
+    position: relative;
+    z-index: 2;
+    overflow-x: auto;
+    display: flex;
+    gap: 15px;
+    padding-bottom: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #00ff66 #020602;
+}
+
+.terminal-slider-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+.terminal-slider-wrapper::-webkit-scrollbar-track {
+    background: #020602;
+    border: 1px solid rgba(0, 255, 102, 0.2);
+}
+.terminal-slider-wrapper::-webkit-scrollbar-thumb {
+    background: #00ff66;
+}
+
+/* 单个日志卡片 */
+.terminal-log-card {
+    min-width: 240px;
+    max-width: 240px;
+    background: rgba(0, 255, 102, 0.02);
+    border: 1px solid rgba(0, 255, 102, 0.3);
+    padding: 14px;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.terminal-log-card:hover {
+    background: rgba(0, 255, 102, 0.08);
+    border-color: #00ff66;
+    box-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
+    transform: translateY(-2px);
+}
+
+.log-phase {
+    font-size: 11px;
+    color: #00ff66;
+    opacity: 0.8;
+    margin-bottom: 6px;
+}
+
+.log-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 8px;
+    text-shadow: 0 0 5px rgba(0, 255, 102, 0.3);
+}
+
+.log-desc {
+    font-size: 12px;
+    color: #a3e635;
+    line-height: 1.5;
+    white-space: normal;
+}
+
+/* 点开详情故障闪切动画 (Glitch Modal) */
+.glitch-modal {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(8px);
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
     z-index: 9999;
     justify-content: center;
     align-items: center;
     padding: 20px;
-    opacity: 0;
-    transition: opacity 0.25s ease;
 }
 
-.minimal-modal.show {
+.glitch-modal.active {
     display: flex;
-    opacity: 1;
+    animation: glitchFlash 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
-.minimal-modal-content {
-    background: rgba(20, 18, 45, 0.9);
-    border: 1px solid rgba(139, 92, 246, 0.4);
-    backdrop-filter: blur(20px);
-    border-radius: 28px;
-    padding: 35px 30px;
-    max-width: 420px;
+@keyframes glitchFlash {
+    0% {
+        opacity: 0;
+        transform: scale(0.9) skewX(10deg);
+        filter: hue-rotate(90deg) contrast(200%);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05) skewX(-10deg);
+        filter: hue-rotate(-90deg) contrast(300%);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) skewX(0);
+        filter: none;
+    }
+}
+
+.glitch-modal-content {
+    background: #020602;
+    border: 2px solid #00ff66;
+    box-shadow: 0 0 40px rgba(0, 255, 102, 0.4), inset 0 0 20px rgba(0, 255, 102, 0.1);
+    padding: 30px;
+    max-width: 450px;
     width: 90%;
-    text-align: center;
-    color: #cbd5e1;
-    font-size: 16px;
-    line-height: 1.8;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
-    transform: scale(0.92);
-    transition: transform 0.25s cubic-bezier(0.34, 1.15, 0.64, 1);
-}
-
-.minimal-modal.show .minimal-modal-content {
-    transform: scale(1);
-}
-
-/* 编年史卡片专属视觉优化 */
-.timeline-card {
-    text-align: left;
-    padding: 30px 24px;
-}
-
-.timeline-card h2 {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-/* 编年史时间轴专属样式 */
-.timeline {
-    border-left: 2px solid rgba(139, 92, 246, 0.4);
-    margin: 20px 0 10px 8px;
-    padding-left: 32px;
-    text-align: left;
-}
-
-.timeline-item {
+    color: #00ff66;
+    font-family: ui-monospace, monospace;
     position: relative;
-    margin-bottom: 42px;
 }
 
-.timeline-item:last-child {
-    margin-bottom: 0;
+.glitch-close-btn {
+    margin-top: 20px;
+    background: transparent;
+    border: 1px solid #00ff66;
+    color: #00ff66;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-family: monospace;
+    font-weight: bold;
+    width: 100%;
+    transition: 0.2s;
 }
 
-.timeline-item::before {
-    content: '';
-    position: absolute;
-    left: -40px;
-    top: 8px;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: #8b5cf6;
-    box-shadow: 0 0 12px #8b5cf6;
+.glitch-close-btn:hover {
+    background: #00ff66;
+    color: #000;
+    box-shadow: 0 0 15px #00ff66;
 }
 
-.timeline-date {
-    font-size: 14px;
-    color: #a78bfa;
-    font-weight: 700;
-    margin-bottom: 12px;
-    letter-spacing: 1px;
-}
-
-.timeline-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 12px;
-    line-height: 1.4;
-}
-
-.timeline-desc {
-    font-size: 15px;
-    color: #d1d5db;
-    line-height: 1.8;
-}
-
-/* 编年史分段列表样式 */
-.timeline-desc ul {
-    margin: 0;
-    padding-left: 24px;
-}
-
-.timeline-desc li {
-    margin-bottom: 8px;     
-}
-
-.timeline-desc li:last-child {
-    margin-bottom: 0;
-}
-
-.timeline-desc li::marker {
-    color: #a78bfa;
-}
+/* ========================================================= */
 
 .tag-group {
     margin-bottom: 22px;
@@ -450,7 +544,7 @@ h2 {
 
 <div class="hero">
     <a href="javascript:void(0);" onclick="showToastAndRedirect('https://yilink.uk')" class="avatar-link" title="访问 Yilink 主页">
-        <img src="https://img.yilink.uk/yilink.jpg" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\'><rect width=\'120\' height=\'120\' fill=\'%23333\'/><text x=\'50%\' y=\'50%\' fill=\'white\' font-size=\'40\' text-anchor=\'middle\' dy=\'.3em\'>Y</text></svg>'">
+        <img src="https://img.yilink.uk/yilink.jpg" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><rect width='120' height='120' fill='%23333'/><text x='50%' y='50%' fill='white' font-size='40' text-anchor='middle' dy='.3em'>Y</text></svg>'">
     </a>
     <h1>Yilink 的赛博漫游报告</h1>
     <p style="margin-top: 20px; text-align: center; display: flex; justify-content: center; gap: 10px;">
@@ -502,71 +596,70 @@ h2 {
     </div>
 </div>
 
-<!-- ================= 编年史 ================= -->
-<div class="card timeline-card">
-    <h2>📅 赛博进化编年史</h2>
+<!-- ================= 独立终端子系统 (黑客朋克风) ================= -->
+<div class="terminal-subsystem">
+    <div class="terminal-ghost-bg">05</div>
     
-    <div class="timeline">
-        <div class="timeline-item">
-            <div class="timeline-date">Phase 1 / 2025.06 - 2025.08</div>
-            <div class="timeline-title">网络配置与游戏体验</div>
-            <div class="timeline-desc">
-                <ul>
-                    <li>捣鼓不同的代理工具与网络配置方案；</li>
-                    <li>游玩《Celeste》MOD、《空洞骑士》；</li>
-                    <li>折腾 Joy-Con、Switch Pro 手柄连 PC 时的延迟与按键映射；</li>
-                    <li>听 Vocaloid、Mili 等独立音乐与同人曲。</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="timeline-item">
-            <div class="timeline-date">Phase 2 / 2025.09 - 2025.11</div>
-            <div class="timeline-title">虚拟角色与主机联机</div>
-            <div class="timeline-desc">
-                <ul>
-                    <li>获取《OneShot》Niko 的角色模型并成功导入游戏；</li>
-                    <li>游玩《集合啦！动物森友会》与《喷射战士3》，同时折腾主机 NAT 类型检测与联机加速方案。</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="timeline-item">
-            <div class="timeline-date">Phase 3 / 2025.12 - 2026.02</div>
-            <div class="timeline-title">音频折腾与独立游戏</div>
-            <div class="timeline-desc">
-                <ul>
-                    <li>入坑耳机圈，对比体验原道 B80、小蓝帽、弦雪等耳机，排查底噪与设备兼容问题；</li>
-                    <li>沉迷《小丑牌》《Animal Well》等机制型独立游戏。</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="timeline-item">
-            <div class="timeline-date">Phase 4 / 2026.03 - 2026.05</div>
-            <div class="timeline-title">AI 工具链与海外服务</div>
-            <div class="timeline-desc">
-                <ul>
-                    <li>使用 DeepSeek、Gemini 等 AI 服务，通过 Cherry Studio 进行聚合管理；</li>
-                    <li>配置 AstrBot 等 AI 智能体框架，折腾插件扩展与长期记忆，关注 Gemini API 额度与账单；</li>
-                    <li>探索海外账号体系、支付验证与云服务接入流程。</li>
-                </ul>
-            </div>
+    <div class="terminal-header">
+        <span class="terminal-title">&gt;&gt; SYS.EVOLUTION_LOGS // 5 NODES_CONNECTED</span>
+        <span class="terminal-status">[ ACTIVE ]</span>
+    </div>
+
+    <!-- 锯齿信号波形图 (心电图/股票K线风连接5个节点) -->
+    <div class="signal-waveform-container">
+        <canvas id="signalWaveform"></canvas>
+    </div>
+
+    <!-- 横向滑动日志卡片轨道 -->
+    <div class="terminal-slider-wrapper">
+        <!-- Node 1 -->
+        <div class="terminal-log-card" onclick="openGlitchModal('PHASE 01', '2025.06 - 2025.08', '网络配置与游戏体验', '• 捣鼓不同的代理工具与网络配置方案；\n• 游玩《Celeste》MOD、《空洞骑士》；\n• 折腾 Joy-Con、Switch Pro 手柄连 PC 时的延迟与按键映射；\n• 听 Vocaloid、Mili 等独立音乐与同人曲。')">
+            <div class="log-phase">NODE_01 // 2025.06 - 08</div>
+            <div class="log-title">网络与游戏体验</div>
+            <div class="log-desc">代理工具配置、手柄映射及独立游戏串联。</div>
         </div>
 
-        <div class="timeline-item">
-            <div class="timeline-date">Phase 5 / 2026.06 - 2026.07</div>
-            <div class="timeline-title">云端建站与安卓玩机</div>
-            <div class="timeline-desc">
-                <ul>
-                    <li>独立部署个人项目「果了个果 / Yilink Hub」，搭建 Vercel + Cloudflare 云端架构，配置 DNS、R2 对象存储、D1 数据库与 Tunnel 等基础设施；</li>
-                    <li>折腾安卓 Root 环境，配置 KernelSU、LSPosed 与 Magisk 生态。</li>
-                </ul>
-            </div>
+        <!-- Node 2 -->
+        <div class="terminal-log-card" onclick="openGlitchModal('PHASE 02', '2025.09 - 2025.11', '虚拟角色与主机联机', '• 获取《OneShot》Niko 的角色模型并成功导入游戏；\n• 游玩《集合啦！动物森友会》与《喷射战士3》，同时折腾主机 NAT 类型检测与联机加速方案。')">
+            <div class="log-phase">NODE_02 // 2025.09 - 11</div>
+            <div class="log-title">虚拟角色与联机</div>
+            <div class="log-desc">OneShot 模型导入、NAT 状态与主机联机调优。</div>
+        </div>
+
+        <!-- Node 3 -->
+        <div class="terminal-log-card" onclick="openGlitchModal('PHASE 03', '2025.12 - 2026.02', '音频折腾与独立游戏', '• 入坑耳机圈，对比体验原道 B80、小蓝帽、弦雪等耳机，排查底噪与设备兼容问题；\n• 沉迷《小丑牌》《Animal Well》等机制型独立游戏。')">
+            <div class="log-phase">NODE_03 // 2025.12 - 02</div>
+            <div class="log-title">音频设备与独立游戏</div>
+            <div class="log-desc">HIFI 耳机降噪排查、机制型独立游戏深度沉迷。</div>
+        </div>
+
+        <!-- Node 4 -->
+        <div class="terminal-log-card" onclick="openGlitchModal('PHASE 04', '2026.03 - 2026.05', 'AI 工具链与海外服务', '• 使用 DeepSeek、Gemini 等 AI 服务，通过 Cherry Studio 进行聚合管理；\n• 配置 AstrBot 等 AI 智能体框架，折腾插件扩展与长期记忆，关注 Gemini API 额度与账单；\n• 探索海外账号体系、支付验证与云服务接入流程。')">
+            <div class="log-phase">NODE_04 // 2026.03 - 05</div>
+            <div class="log-title">AI 工具链与智能体</div>
+            <div class="log-desc">Cherry Studio 聚合、AstrBot 框架与 API 调度。</div>
+        </div>
+
+        <!-- Node 5 -->
+        <div class="terminal-log-card" onclick="openGlitchModal('PHASE 05', '2026.06 - 2026.07', '云端建站与安卓玩机', '• 独立部署个人项目「果了个果 / Yilink Hub」，搭建 Vercel + Cloudflare 云端架构，配置 DNS、R2 对象存储、D1 数据库与 Tunnel 等基础设施；\n• 折腾安卓 Root 环境，配置 KernelSU、LSPosed 与 Magisk 生态。')">
+            <div class="log-phase" style="color: #34d399;">NODE_05 // LATEST</div>
+            <div class="log-title" style="color: #34d399;">云端建站与安卓底层</div>
+            <div class="log-desc">Vercel/CF 架构部署、KernelSU 与底层玩机生态。</div>
         </div>
     </div>
 </div>
 <!-- ========================================================= -->
+
+<!-- 故障闪切详情弹窗 (Glitch Modal) -->
+<div id="glitchModal" class="glitch-modal" onclick="closeGlitchModalOnBg(event)">
+    <div class="glitch-modal-content">
+        <div id="glitchPhase" style="font-size: 12px; color: #00ff66; opacity: 0.7; margin-bottom: 5px;"></div>
+        <div id="glitchTime" style="font-size: 11px; color: #a3e635; margin-bottom: 10px;"></div>
+        <div id="glitchTitle" style="font-size: 18px; font-weight: bold; margin-bottom: 15px; border-bottom: 1px dashed #00ff66; padding-bottom: 8px;"></div>
+        <div id="glitchDesc" style="font-size: 14px; line-height: 1.8; white-space: pre-line; color: #cbd5e1;"></div>
+        <button class="glitch-close-btn" onclick="closeGlitchModal()">[ 关闭终端流 ]</button>
+    </div>
+</div>
 
 <div class="card">
     <h2>🔥 历史上最忙碌的 5 天</h2>
@@ -651,7 +744,7 @@ h2 {
     <div class="custom-modal-content">
         <div class="custom-modal-title">✨ 传送门提示</div>
         <div class="custom-modal-desc">
-            嗨！这是我（Yilink）的个人项目 <span>「果了个果」</span>，绝对是我的地盘，放心去逛吧！
+            嗨! 这是我（Yilink）的个人项目 <span>「果了个果」</span>，绝对是我的地盘，放心去逛吧！
         </div>
         <div class="custom-modal-btns">
             <button class="custom-modal-btn btn-cancel" onclick="closeProjectModal()">留在这里</button>
@@ -666,13 +759,32 @@ h2 {
 </div>
 
 <script>
+// 故障闪切弹窗逻辑
+function openGlitchModal(phase, time, title, desc) {
+    document.getElementById('glitchPhase').innerText = phase + ' // CONNECTION_SECURE';
+    document.getElementById('glitchTime').innerText = 'TIME_WINDOW: ' + time;
+    document.getElementById('glitchTitle').innerText = title;
+    document.getElementById('glitchDesc').innerText = desc.replace(/\n/g, '\n');
+    document.getElementById('glitchModal').classList.add('active');
+}
+
+function closeGlitchModal() {
+    document.getElementById('glitchModal').classList.remove('active');
+}
+
+function closeGlitchModalOnBg(event) {
+    if (event.target.id === 'glitchModal') {
+        closeGlitchModal();
+    }
+}
+
 // 彩蛋：顶部上滑时头像跟随旋转
 (function () {
     var avatarImg = document.querySelector('.hero img');
     if (!avatarImg) return;
 
     var ticking = false;
-    var maxScrollForFullSpin = 600; // 滑动多少像素旋转满一圈，可按需调整
+    var maxScrollForFullSpin = 600;
 
     function updateAvatarRotation() {
         var scrollY = window.scrollY || window.pageYOffset || 0;
@@ -725,7 +837,6 @@ function closeMinimalModal(event) {
     modal.classList.remove('show');
 }
 
-// 点击弹窗背景也可以关闭
 window.onclick = function(event) {
     var modal = document.getElementById('projectModal');
     if (event.target == modal) {
@@ -763,11 +874,11 @@ new Chart(document.getElementById('doughnutChart'), {
         datasets: [{
             data: [35, 25, 20, 12, 8],
             backgroundColor: [
-                '#8b5cf6', // 紫色
-                '#3b82f6', // 蓝色
-                '#10b981', // 绿色
-                '#f59e0b', // 橙色
-                '#ef4444'  // 红色
+                '#8b5cf6',
+                '#3b82f6',
+                '#10b981',
+                '#f59e0b',
+                '#ef4444'
             ],
             borderWidth: 0,
             hoverOffset: 4
@@ -780,6 +891,40 @@ new Chart(document.getElementById('doughnutChart'), {
             legend: {
                 position: 'right',
                 labels: { color: '#ccc', font: { size: 12 }, boxWidth: 12, padding: 15 }
+            }
+        }
+    }
+});
+
+// 终端锯齿信号波形图 (模拟 5 个节点连接的脉冲/心电图/K线)
+new Chart(document.getElementById('signalWaveform'), {
+    type: 'line',
+    data: {
+        labels: ['N1', '', '', 'N2', '', '', 'N3', '', '', 'N4', '', '', 'N5', ''],
+        datasets: [{
+            data: [10, 45, 12, 85, 30, 90, 20, 65, 15, 95, 40, 70, 25, 80],
+            borderColor: '#00ff66',
+            backgroundColor: 'rgba(0, 255, 102, 0.1)',
+            borderWidth: 2,
+            pointRadius: [4, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0],
+            pointBackgroundColor: '#00ff66',
+            fill: true,
+            tension: 0.1 // 锯齿感，不圆润
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { 
+                grid: { color: 'rgba(0, 255, 102, 0.05)' }, 
+                ticks: { color: '#00ff66', font: { family: 'monospace', size: 10 } } 
+            },
+            y: { 
+                grid: { color: 'rgba(0, 255, 102, 0.08)' }, 
+                ticks: { display: false },
+                min: 0,
+                max: 100
             }
         }
     }
