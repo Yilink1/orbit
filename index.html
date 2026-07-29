@@ -175,121 +175,73 @@ body {
 /* 编年史卡片专属视觉优化 */
 .timeline-card {
     text-align: left;
-    padding: 34px 22px 10px;
+    padding: 30px 24px;
 }
 
 .timeline-card h2 {
     text-align: center;
-    margin-bottom: 6px;
+    margin-bottom: 25px;
 }
 
-.timeline-subtitle {
-    text-align: center;
-    color: #6b7280;
-    font-size: 13px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 34px;
-}
-
-/* 编年史时间轴专属样式：独立卡片堆叠，左侧一条极细竖线做时间轴暗示，不挤占正文宽度 */
+/* 编年史时间轴专属样式 */
 .timeline {
+    border-left: 2px solid rgba(139, 92, 246, 0.4);
+    margin: 20px 0 10px 8px;
+    padding-left: 32px;
     text-align: left;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    position: relative;
-    margin-left: 5px;
-    padding-left: 14px;
-}
-
-/* 极细竖线：贯穿整条时间轴，只是氛围提示，不承载信息宽度 */
-.timeline::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 6px;
-    bottom: 6px;
-    width: 1px;
-    background: rgba(139, 92, 246, 0.25);
 }
 
 .timeline-item {
     position: relative;
-    background: rgba(255, 255, 255, 0.045);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 18px;
-    padding: 20px 20px 22px;
+    margin-bottom: 42px;
 }
 
-/* 极小圆点：挂在细线上，标记每个阶段的起点 */
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
 .timeline-item::before {
     content: '';
     position: absolute;
-    left: -17.5px;
-    top: 26px;
-    width: 5px;
-    height: 5px;
+    left: -40px;
+    top: 8px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
-    background: #a78bfa;
-}
-
-/* 卡片头部：编号标签 + 日期胶囊 同一行 */
-.timeline-head {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
-}
-
-.timeline-node {
-    width: 26px;
-    height: 26px;
-    border-radius: 8px;
-    background: rgba(139, 92, 246, 0.15);
-    border: 1px solid rgba(139, 92, 246, 0.35);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 700;
-    color: #c4b5fd;
-    flex-shrink: 0;
+    background: #8b5cf6;
+    box-shadow: 0 0 12px #8b5cf6;
 }
 
 .timeline-date {
-    font-size: 12px;
+    font-size: 14px;
     color: #a78bfa;
     font-weight: 700;
-    letter-spacing: 0.5px;
-    background: rgba(139, 92, 246, 0.14);
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    padding: 4px 12px;
-    border-radius: 20px;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
 }
 
 .timeline-title {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
     color: #fff;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     line-height: 1.4;
 }
 
 .timeline-desc {
-    font-size: 14.5px;
-    color: #cbd0da;
+    font-size: 15px;
+    color: #d1d5db;
     line-height: 1.8;
 }
 
 /* 编年史分段列表样式 */
 .timeline-desc ul {
     margin: 0;
-    padding-left: 20px;
+    padding-left: 24px;
 }
 
 .timeline-desc li {
-    margin-bottom: 7px;
+    margin-bottom: 8px;     
 }
 
 .timeline-desc li:last-child {
@@ -553,14 +505,10 @@ h2 {
 <!-- ================= 编年史 ================= -->
 <div class="card timeline-card">
     <h2>📅 赛博进化编年史</h2>
-    <div class="timeline-subtitle">2025.06 — 2026.07 · 五个阶段</div>
-
+    
     <div class="timeline">
         <div class="timeline-item">
-            <div class="timeline-head">
-                <span class="timeline-node">01</span>
-                <span class="timeline-date">2025.06 – 2025.08</span>
-            </div>
+            <div class="timeline-date">Phase 1 / 2025.06 - 2025.08</div>
             <div class="timeline-title">网络配置与游戏体验</div>
             <div class="timeline-desc">
                 <ul>
@@ -571,12 +519,9 @@ h2 {
                 </ul>
             </div>
         </div>
-
+        
         <div class="timeline-item">
-            <div class="timeline-head">
-                <span class="timeline-node">02</span>
-                <span class="timeline-date">2025.09 – 2025.11</span>
-            </div>
+            <div class="timeline-date">Phase 2 / 2025.09 - 2025.11</div>
             <div class="timeline-title">虚拟角色与主机联机</div>
             <div class="timeline-desc">
                 <ul>
@@ -585,12 +530,9 @@ h2 {
                 </ul>
             </div>
         </div>
-
+        
         <div class="timeline-item">
-            <div class="timeline-head">
-                <span class="timeline-node">03</span>
-                <span class="timeline-date">2025.12 – 2026.02</span>
-            </div>
+            <div class="timeline-date">Phase 3 / 2025.12 - 2026.02</div>
             <div class="timeline-title">音频折腾与独立游戏</div>
             <div class="timeline-desc">
                 <ul>
@@ -599,12 +541,9 @@ h2 {
                 </ul>
             </div>
         </div>
-
+        
         <div class="timeline-item">
-            <div class="timeline-head">
-                <span class="timeline-node">04</span>
-                <span class="timeline-date">2026.03 – 2026.05</span>
-            </div>
+            <div class="timeline-date">Phase 4 / 2026.03 - 2026.05</div>
             <div class="timeline-title">AI 工具链与海外服务</div>
             <div class="timeline-desc">
                 <ul>
@@ -616,10 +555,7 @@ h2 {
         </div>
 
         <div class="timeline-item">
-            <div class="timeline-head">
-                <span class="timeline-node">05</span>
-                <span class="timeline-date">2026.06 – 2026.07</span>
-            </div>
+            <div class="timeline-date">Phase 5 / 2026.06 - 2026.07</div>
             <div class="timeline-title">云端建站与安卓玩机</div>
             <div class="timeline-desc">
                 <ul>
