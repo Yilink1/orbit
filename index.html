@@ -60,10 +60,10 @@ body {
     object-fit: cover;
     box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
 }
 
 .hero img:hover {
-    transform: scale(1.06) rotate(6deg);
     box-shadow: 0 0 30px rgba(139, 92, 246, 0.8);
 }
 
@@ -666,6 +666,29 @@ h2 {
 </div>
 
 <script>
+// 彩蛋：顶部上滑时头像跟随旋转
+(function () {
+    var avatarImg = document.querySelector('.hero img');
+    if (!avatarImg) return;
+
+    var ticking = false;
+    var maxScrollForFullSpin = 600; // 滑动多少像素旋转满一圈，可按需调整
+
+    function updateAvatarRotation() {
+        var scrollY = window.scrollY || window.pageYOffset || 0;
+        var deg = (scrollY / maxScrollForFullSpin) * 360;
+        avatarImg.style.transform = 'rotate(' + deg + 'deg)';
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+        if (!ticking) {
+            window.requestAnimationFrame(updateAvatarRotation);
+            ticking = true;
+        }
+    }, { passive: true });
+})();
+
 // 头像点击气泡提示与跳转逻辑
 function showToastAndRedirect(url) {
     var toast = document.getElementById('toast-notification');
