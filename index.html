@@ -172,7 +172,18 @@ body {
     transform: scale(1);
 }
 
-/* 编年史时间轴专属样式（已移至最左侧并优化手机端防截断） */
+/* 编年史卡片专属视觉优化 */
+.timeline-card {
+    text-align: left;
+    padding: 30px 24px;
+}
+
+.timeline-card h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* 编年史时间轴专属样式 */
 .timeline {
     border-left: 2px solid rgba(139, 92, 246, 0.4);
     margin: 20px 0 10px 4px;   
@@ -217,9 +228,9 @@ body {
 }
 
 .timeline-desc {
-    font-size: 15px;
-    color: #cbd5e1;
-    line-height: 1.6;
+    font-size: 15.5px;
+    color: #e2e8f0;
+    line-height: 1.7;
 }
 
 /* 编年史分段列表样式 */
@@ -229,7 +240,7 @@ body {
 }
 
 .timeline-desc li {
-    margin-bottom: 6px;
+    margin-bottom: 8px;     
 }
 
 .timeline-desc li:last-child {
@@ -490,8 +501,8 @@ h2 {
     </div>
 </div>
 
-<!-- ================= 编年史（已调整为左对齐） ================= -->
-<div class="card" style="text-align: left;">
+<!-- ================= 编年史 ================= -->
+<div class="card timeline-card">
     <h2>📅 赛博进化编年史</h2>
     
     <div class="timeline">
@@ -639,7 +650,7 @@ h2 {
     <div class="custom-modal-content">
         <div class="custom-modal-title">✨ 传送门提示</div>
         <div class="custom-modal-desc">
-            嗨!这是我（Yilink）的个人项目 <span>「果了个果」</span>，绝对是我的地盘，放心去逛吧！
+            嗨！这是我（Yilink）的个人项目 <span>「果了个果」</span>，绝对是我的地盘，放心去逛吧！
         </div>
         <div class="custom-modal-btns">
             <button class="custom-modal-btn btn-cancel" onclick="closeProjectModal()">留在这里</button>
