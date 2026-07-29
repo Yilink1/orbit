@@ -128,17 +128,61 @@ body {
     border-bottom: none;
 }
 
+/* 极简居中浮层样式 */
+.minimal-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.minimal-modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.minimal-modal-content {
+    background: rgba(20, 18, 45, 0.9);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: 35px 30px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    color: #cbd5e1;
+    font-size: 16px;
+    line-height: 1.8;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+    transform: scale(0.92);
+    transition: transform 0.25s cubic-bezier(0.34, 1.15, 0.64, 1);
+}
+
+.minimal-modal.show .minimal-modal-content {
+    transform: scale(1);
+}
+
 /* 编年史时间轴专属样式 */
 .timeline {
     border-left: 2px solid rgba(139, 92, 246, 0.4);
-    margin: 30px 0 10px 15px;
-    padding-left: 25px;
+    margin: 30px 0 10px 22px;   /* 稍微加大左侧外边距 */
+    padding-left: 24px;         /* 增加文字与轴线之间的间距 */
     text-align: left;
 }
 
 .timeline-item {
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 32px;
 }
 
 .timeline-item:last-child {
@@ -148,7 +192,7 @@ body {
 .timeline-item::before {
     content: '';
     position: absolute;
-    left: -32px;
+    left: -31px;               /* 对应调整圆点位置，使其完美压在竖线上 */
     top: 5px;
     width: 12px;
     height: 12px;
@@ -405,19 +449,19 @@ h2 {
 </div>
 
 <div class="grid-2">
-    <div class="card" style="margin: 10px 0;">
+    <div class="card" style="margin: 10px 0; cursor: pointer;" onclick="showInfoModal('browse')">
         <div class="big" style="font-size: 48px;">12167</div>
         <div class="desc" style="font-size: 14px;">次网页浏览</div>
     </div>
-    <div class="card" style="margin: 10px 0;">
+    <div class="card" style="margin: 10px 0; cursor: pointer;" onclick="showInfoModal('days')">
         <div class="big" style="font-size: 48px;">404</div>
         <div class="desc" style="font-size: 14px;">天的互联网探索</div>
     </div>
 </div>
 
 <div class="card">
-    <div class="person" style="margin-bottom: 5px;">💻 赛博游侠 / 搞机砖家</div>
-    <div class="desc" style="font-size: 15px; margin-bottom: 25px;">游走于云端架构与底层系统之间的探险者</div>
+    <div class="person" style="margin-bottom: 5px;">🧱 搞机砖家</div>
+    <div class="desc" style="font-size: 15px; margin-bottom: 25px;">专注云端架构与底层系统的寄术折腾者</div>
     <div style="display: flex; justify-content: space-between; text-align: center;">
         <div style="flex: 1;">
             <div style="color: #aaa; font-size: 14px;">夜间活动 (0-5点)</div>
@@ -448,8 +492,7 @@ h2 {
 
 <!-- ================= 编年史 ================= -->
 <div class="card">
-    <h2>📅 赛博冲浪编年史</h2>
-    <div class="desc" style="font-size: 14px; margin-bottom: 20px;">跨越 404 天的技术折腾与数字足迹</div>
+    <h2>📅 赛博进化编年史</h2>
     
     <div class="timeline">
         <div class="timeline-item">
@@ -458,7 +501,7 @@ h2 {
             <div class="timeline-desc">
                 <ul>
                     <li>捣鼓不同的代理工具与网络配置方案；</li>
-                    <li>游玩《蔚蓝》(Celeste) 的 MOD 关卡与《空洞骑士》；</li>
+                    <li>游玩《Celeste》MOD、《空洞骑士》；</li>
                     <li>折腾 Joy-Con、Switch Pro 手柄连 PC 时的延迟与按键映射；</li>
                     <li>听 Vocaloid、Mili 等独立音乐与同人曲。</li>
                 </ul>
@@ -471,7 +514,7 @@ h2 {
             <div class="timeline-desc">
                 <ul>
                     <li>获取《OneShot》Niko 的角色模型并成功导入游戏；</li>
-                    <li>游玩《集合啦！动物森友会》与《喷射战士3》，顺带折腾了主机 NAT 类型检测与联机加速方案。</li>
+                    <li>游玩《集合啦！动物森友会》与《喷射战士3》，同时折腾主机 NAT 类型检测与联机加速方案。</li>
                 </ul>
             </div>
         </div>
@@ -481,7 +524,7 @@ h2 {
             <div class="timeline-title">音频折腾与独立游戏</div>
             <div class="timeline-desc">
                 <ul>
-                    <li>入坑平头塞，对比体验原道 B80、小蓝帽、弦雪等耳机，排查底噪与设备兼容问题；</li>
+                    <li>入坑耳机圈，对比体验原道 B80、小蓝帽、弦雪等耳机，排查底噪与设备兼容问题；</li>
                     <li>沉迷《小丑牌》《Animal Well》等机制型独立游戏。</li>
                 </ul>
             </div>
@@ -492,9 +535,9 @@ h2 {
             <div class="timeline-title">AI 工具链与海外服务</div>
             <div class="timeline-desc">
                 <ul>
-                    <li>使用 DS、Gemini 等 AI 服务，通过 Cherry Studio 进行聚合管理；</li>
+                    <li>使用 DeepSeek、Gemini 等 AI 服务，通过 Cherry Studio 进行聚合管理；</li>
                     <li>配置 AstrBot 等 AI 智能体框架，折腾插件扩展与长期记忆，关注 Gemini API 额度与账单；</li>
-                    <li>死磕海外账号体系、支付验证与云服务接入流程。</li>
+                    <li>探索海外账号体系、支付验证与云服务接入流程。</li>
                 </ul>
             </div>
         </div>
@@ -504,7 +547,7 @@ h2 {
             <div class="timeline-title">云端建站与安卓玩机</div>
             <div class="timeline-desc">
                 <ul>
-                    <li>独立部署个人项目「Yilink Hub」，搭建 Vercel + Cloudflare 云端架构，配置 DNS、R2 对象存储、D1 数据库与 Tunnel 等基础设施；</li>
+                    <li>独立部署个人项目「果了个果 / Yilink Hub」，搭建 Vercel + Cloudflare 云端架构，配置 DNS、R2 对象存储、D1 数据库与 Tunnel 等基础设施；</li>
                     <li>折腾安卓 Root 环境，配置 KernelSU、LSPosed 与 Magisk 生态。</li>
                 </ul>
             </div>
@@ -605,6 +648,11 @@ h2 {
     </div>
 </div>
 
+<!-- 极简居中浮层 -->
+<div id="minimalModal" class="minimal-modal" onclick="closeMinimalModal(event)">
+    <div class="minimal-modal-content" id="minimalModalContent"></div>
+</div>
+
 <script>
 // 头像点击气泡提示与跳转逻辑
 function showToastAndRedirect(url) {
@@ -624,6 +672,24 @@ function openProjectModal() {
 function closeProjectModal() {
     document.getElementById('projectModal').style.display = 'none';
 }
+
+// 极简浮层交互逻辑
+function showInfoModal(type) {
+    var modal = document.getElementById('minimalModal');
+    var content = document.getElementById('minimalModalContent');
+    if (type === 'browse') {
+        content.innerHTML = '月度起伏趋势：经历 2025 年夏低谷后一路攀升，于 2026 年 6-7 月迎折腾爆发期（单月峰值 3,890 条），近两月贡献总浏览量超 60%。';
+    } else if (type === 'days') {
+        content.innerHTML = '最长连续每日在线：<b>68 天</b><br><br>全年最长连续离线：<b>4 天</b>';
+    }
+    modal.classList.add('show');
+}
+
+function closeMinimalModal(event) {
+    var modal = document.getElementById('minimalModal');
+    modal.classList.remove('show');
+}
+
 // 点击弹窗背景也可以关闭
 window.onclick = function(event) {
     var modal = document.getElementById('projectModal');
