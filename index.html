@@ -175,72 +175,115 @@ body {
 /* 编年史卡片专属视觉优化 */
 .timeline-card {
     text-align: left;
-    padding: 30px 24px;
+    padding: 34px 22px 10px;
 }
 
 .timeline-card h2 {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 6px;
 }
 
-/* 编年史时间轴专属样式 */
+.timeline-subtitle {
+    text-align: center;
+    color: #6b7280;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 34px;
+}
+
+/* 编年史时间轴专属样式：每个阶段一张独立卡片，靠左侧编号轴串联 */
 .timeline {
-    border-left: 2px solid rgba(139, 92, 246, 0.4);
-    margin: 20px 0 10px 4px;   
-    padding-left: 16px;         
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
 }
 
 .timeline-item {
     position: relative;
-    margin-bottom: 32px;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    column-gap: 16px;
+    align-items: center;
+    padding-bottom: 28px;
 }
 
 .timeline-item:last-child {
-    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
-.timeline-item::before {
+/* 左侧编号节点：与卡片整体垂直居中对齐，数字代表阶段顺序 */
+.timeline-node {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #8b5cf6, #6d28d9);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15), 0 4px 14px rgba(139, 92, 246, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+    z-index: 1;
+    align-self: center;
+}
+
+/* 连接线：贯穿整个 item 高度，向下延伸到下一个节点 */
+.timeline-item:not(:last-child)::before {
     content: '';
     position: absolute;
-    left: -23px;               
-    top: 5px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #8b5cf6;
-    box-shadow: 0 0 12px #8b5cf6;
+    left: 19px;
+    top: 20px;
+    bottom: -28px;
+    width: 2px;
+    background: linear-gradient(180deg, rgba(139, 92, 246, 0.5), rgba(139, 92, 246, 0.1));
+}
+
+.timeline-body {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 18px;
+    padding: 20px 22px 20px 28px;
 }
 
 .timeline-date {
-    font-size: 13px;
+    display: inline-block;
+    font-size: 12px;
     color: #a78bfa;
     font-weight: 700;
-    margin-bottom: 6px;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    background: rgba(139, 92, 246, 0.14);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
 }
 
 .timeline-title {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 700;
     color: #fff;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+    line-height: 1.4;
 }
 
 .timeline-desc {
-    font-size: 15.5px;
-    color: #e2e8f0;
-    line-height: 1.7;
+    font-size: 14.5px;
+    color: #b8bdc9;
+    line-height: 1.75;
 }
 
 /* 编年史分段列表样式 */
 .timeline-desc ul {
     margin: 0;
-    padding-left: 18px;
+    padding-left: 20px;
 }
 
 .timeline-desc li {
-    margin-bottom: 8px;     
+    margin-bottom: 7px;
 }
 
 .timeline-desc li:last-child {
@@ -504,63 +547,79 @@ h2 {
 <!-- ================= 编年史 ================= -->
 <div class="card timeline-card">
     <h2>📅 赛博进化编年史</h2>
-    
+    <div class="timeline-subtitle">2025.06 — 2026.07 · 五个阶段</div>
+
     <div class="timeline">
         <div class="timeline-item">
-            <div class="timeline-date">Phase 1 / 2025.06 - 2025.08</div>
-            <div class="timeline-title">网络配置与游戏体验</div>
-            <div class="timeline-desc">
-                <ul>
-                    <li>捣鼓不同的代理工具与网络配置方案；</li>
-                    <li>游玩《Celeste》MOD、《空洞骑士》；</li>
-                    <li>折腾 Joy-Con、Switch Pro 手柄连 PC 时的延迟与按键映射；</li>
-                    <li>听 Vocaloid、Mili 等独立音乐与同人曲。</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="timeline-item">
-            <div class="timeline-date">Phase 2 / 2025.09 - 2025.11</div>
-            <div class="timeline-title">虚拟角色与主机联机</div>
-            <div class="timeline-desc">
-                <ul>
-                    <li>获取《OneShot》Niko 的角色模型并成功导入游戏；</li>
-                    <li>游玩《集合啦！动物森友会》与《喷射战士3》，同时折腾主机 NAT 类型检测与联机加速方案。</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="timeline-item">
-            <div class="timeline-date">Phase 3 / 2025.12 - 2026.02</div>
-            <div class="timeline-title">音频折腾与独立游戏</div>
-            <div class="timeline-desc">
-                <ul>
-                    <li>入坑耳机圈，对比体验原道 B80、小蓝帽、弦雪等耳机，排查底噪与设备兼容问题；</li>
-                    <li>沉迷《小丑牌》《Animal Well》等机制型独立游戏。</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="timeline-item">
-            <div class="timeline-date">Phase 4 / 2026.03 - 2026.05</div>
-            <div class="timeline-title">AI 工具链与海外服务</div>
-            <div class="timeline-desc">
-                <ul>
-                    <li>使用 DeepSeek、Gemini 等 AI 服务，通过 Cherry Studio 进行聚合管理；</li>
-                    <li>配置 AstrBot 等 AI 智能体框架，折腾插件扩展与长期记忆，关注 Gemini API 额度与账单；</li>
-                    <li>探索海外账号体系、支付验证与云服务接入流程。</li>
-                </ul>
+            <div class="timeline-node">01</div>
+            <div class="timeline-body">
+                <div class="timeline-date">2025.06 – 2025.08</div>
+                <div class="timeline-title">网络配置与游戏体验</div>
+                <div class="timeline-desc">
+                    <ul>
+                        <li>捣鼓不同的代理工具与网络配置方案；</li>
+                        <li>游玩《Celeste》MOD、《空洞骑士》；</li>
+                        <li>折腾 Joy-Con、Switch Pro 手柄连 PC 时的延迟与按键映射；</li>
+                        <li>听 Vocaloid、Mili 等独立音乐与同人曲。</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
         <div class="timeline-item">
-            <div class="timeline-date">Phase 5 / 2026.06 - 2026.07</div>
-            <div class="timeline-title">云端建站与安卓玩机</div>
-            <div class="timeline-desc">
-                <ul>
-                    <li>独立部署个人项目「果了个果 / Yilink Hub」，搭建 Vercel + Cloudflare 云端架构，配置 DNS、R2 对象存储、D1 数据库与 Tunnel 等基础设施；</li>
-                    <li>折腾安卓 Root 环境，配置 KernelSU、LSPosed 与 Magisk 生态。</li>
-                </ul>
+            <div class="timeline-node">02</div>
+            <div class="timeline-body">
+                <div class="timeline-date">2025.09 – 2025.11</div>
+                <div class="timeline-title">虚拟角色与主机联机</div>
+                <div class="timeline-desc">
+                    <ul>
+                        <li>获取《OneShot》Niko 的角色模型并成功导入游戏；</li>
+                        <li>游玩《集合啦！动物森友会》与《喷射战士3》，同时折腾主机 NAT 类型检测与联机加速方案。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-node">03</div>
+            <div class="timeline-body">
+                <div class="timeline-date">2025.12 – 2026.02</div>
+                <div class="timeline-title">音频折腾与独立游戏</div>
+                <div class="timeline-desc">
+                    <ul>
+                        <li>入坑耳机圈，对比体验原道 B80、小蓝帽、弦雪等耳机，排查底噪与设备兼容问题；</li>
+                        <li>沉迷《小丑牌》《Animal Well》等机制型独立游戏。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-node">04</div>
+            <div class="timeline-body">
+                <div class="timeline-date">2026.03 – 2026.05</div>
+                <div class="timeline-title">AI 工具链与海外服务</div>
+                <div class="timeline-desc">
+                    <ul>
+                        <li>使用 DeepSeek、Gemini 等 AI 服务，通过 Cherry Studio 进行聚合管理；</li>
+                        <li>配置 AstrBot 等 AI 智能体框架，折腾插件扩展与长期记忆，关注 Gemini API 额度与账单；</li>
+                        <li>探索海外账号体系、支付验证与云服务接入流程。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-node">05</div>
+            <div class="timeline-body">
+                <div class="timeline-date">2026.06 – 2026.07</div>
+                <div class="timeline-title">云端建站与安卓玩机</div>
+                <div class="timeline-desc">
+                    <ul>
+                        <li>独立部署个人项目「果了个果 / Yilink Hub」，搭建 Vercel + Cloudflare 云端架构，配置 DNS、R2 对象存储、D1 数据库与 Tunnel 等基础设施；</li>
+                        <li>折腾安卓 Root 环境，配置 KernelSU、LSPosed 与 Magisk 生态。</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
