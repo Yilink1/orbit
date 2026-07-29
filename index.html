@@ -130,6 +130,50 @@ body {
     border-bottom: none;
 }
 
+/* 极简居中浮层样式 */
+.minimal-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.minimal-modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.minimal-modal-content {
+    background: rgba(20, 18, 45, 0.9);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: 35px 30px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    color: #cbd5e1;
+    font-size: 16px;
+    line-height: 1.8;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+    transform: scale(0.92);
+    transition: transform 0.25s cubic-bezier(0.34, 1.15, 0.64, 1);
+}
+
+.minimal-modal.show .minimal-modal-content {
+    transform: scale(1);
+}
+
 /* ================= 独立终端子系统样式 (黑客风格) ================= */
 .terminal-subsystem {
     background: #020602 !important;
@@ -544,7 +588,7 @@ h2 {
 
 <div class="hero">
     <a href="javascript:void(0);" onclick="showToastAndRedirect('https://yilink.uk')" class="avatar-link" title="访问 Yilink 主页">
-        <img src="https://img.yilink.uk/yilink.jpg" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><rect width='120' height='120' fill='%23333'/><text x='50%' y='50%' fill='white' font-size='40' text-anchor='middle' dy='.3em'>Y</text></svg>'">
+        <img src="https://img.yilink.uk/yilink.jpg" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\'><rect width=\'120\' height=\'120\' fill=\'%23333\'/><text x=\'50%\' y=\'50%\' fill=\'white\' font-size=\'40\' text-anchor=\'middle\' dy=\'.3em\'>Y</text></svg>'">
     </a>
     <h1>Yilink 的赛博漫游报告</h1>
     <p style="margin-top: 20px; text-align: center; display: flex; justify-content: center; gap: 10px;">
@@ -744,7 +788,7 @@ h2 {
     <div class="custom-modal-content">
         <div class="custom-modal-title">✨ 传送门提示</div>
         <div class="custom-modal-desc">
-            嗨! 这是我（Yilink）的个人项目 <span>「果了个果」</span>，绝对是我的地盘，放心去逛吧！
+            嗨！这是我（Yilink）的个人项目 <span>「果了个果」</span>，绝对是我的地盘，放心去逛吧！
         </div>
         <div class="custom-modal-btns">
             <button class="custom-modal-btn btn-cancel" onclick="closeProjectModal()">留在这里</button>
@@ -753,7 +797,7 @@ h2 {
     </div>
 </div>
 
-<!-- 极简居中浮层 -->
+<!-- 极简居中浮层 (修复 12167 和 404 点击弹窗丢失的问题) -->
 <div id="minimalModal" class="minimal-modal" onclick="closeMinimalModal(event)">
     <div class="minimal-modal-content" id="minimalModalContent"></div>
 </div>
@@ -820,7 +864,7 @@ function closeProjectModal() {
     document.getElementById('projectModal').style.display = 'none';
 }
 
-// 极简浮层交互逻辑
+// 极简浮层交互逻辑（恢复 12167 和 404 弹窗文本）
 function showInfoModal(type) {
     var modal = document.getElementById('minimalModal');
     var content = document.getElementById('minimalModalContent');
@@ -909,7 +953,7 @@ new Chart(document.getElementById('signalWaveform'), {
             pointRadius: [4, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0],
             pointBackgroundColor: '#00ff66',
             fill: true,
-            tension: 0.1 // 锯齿感，不圆润
+            tension: 0.1
         }]
     },
     options: {
