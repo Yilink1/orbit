@@ -192,19 +192,46 @@ body {
     margin-bottom: 34px;
 }
 
-/* 编年史时间轴专属样式：独立卡片堆叠，不占用横向空间，正文全宽可读 */
+/* 编年史时间轴专属样式：独立卡片堆叠，左侧一条极细竖线做时间轴暗示，不挤占正文宽度 */
 .timeline {
     text-align: left;
     display: flex;
     flex-direction: column;
     gap: 16px;
+    position: relative;
+    margin-left: 5px;
+    padding-left: 14px;
+}
+
+/* 极细竖线：贯穿整条时间轴，只是氛围提示，不承载信息宽度 */
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: rgba(139, 92, 246, 0.25);
 }
 
 .timeline-item {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    position: relative;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 18px;
     padding: 20px 20px 22px;
+}
+
+/* 极小圆点：挂在细线上，标记每个阶段的起点 */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -17.5px;
+    top: 26px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #a78bfa;
 }
 
 /* 卡片头部：编号标签 + 日期胶囊 同一行 */
@@ -216,17 +243,17 @@ body {
 }
 
 .timeline-node {
-    width: 30px;
-    height: 30px;
-    border-radius: 9px;
-    background: linear-gradient(145deg, #8b5cf6, #6d28d9);
-    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.35);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
-    font-weight: 800;
-    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    color: #c4b5fd;
     flex-shrink: 0;
 }
 
@@ -251,8 +278,8 @@ body {
 
 .timeline-desc {
     font-size: 14.5px;
-    color: #b8bdc9;
-    line-height: 1.75;
+    color: #cbd0da;
+    line-height: 1.8;
 }
 
 /* 编年史分段列表样式 */
